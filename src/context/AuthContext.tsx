@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import axios from "axios";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: {
@@ -17,6 +17,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data: session, status } = useSession();
   const [user, setUser] = useState<AuthContextType["user"]>(null);
+  const router = useRouter();
   const pathname = usePathname();
   console.log(pathname);
 
@@ -31,12 +32,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (
           res.data !== pathname.startsWith(res.data) &&
           pathname !== "/" &&
-          res.data !== "admin" &&
-          pathname !== "/login"
+          res.data !== "admin"
         ) {
+          router.push(`/${res.data}`);
         }
       } catch (error) {
         console.log(error);
+        if (pathname !== "/login" && pathname !== "/") {
+          router.push("/login");
+        }
       }
     };
     fetchRole();
