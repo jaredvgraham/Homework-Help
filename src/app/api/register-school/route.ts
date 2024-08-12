@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
   console.log("Received a request to process CSV file");
 
   const session = await auth();
-  console.log("Session data:", session);
 
   if (!session) {
     console.log("No session found. User not signed in.");
@@ -37,9 +36,6 @@ export async function POST(req: NextRequest) {
     const form = await req.formData();
     const file = form.get("csvFile") as File;
 
-    console.log("Received form data:", form);
-    console.log("File received:", file);
-
     if (!file) {
       console.log("No file uploaded");
       return NextResponse.json({ error: "No file uploaded" }, { status: 400 });
@@ -56,17 +52,13 @@ export async function POST(req: NextRequest) {
       website: form.get("website") as string,
     };
 
-    console.log("School data extracted from form:", schoolData);
-
     const newSchool = new School({
       ...schoolData,
       admin: user.id,
     });
     await newSchool.save();
-    console.log("School saved to the database:", newSchool);
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    console.log("Converted file to buffer");
 
     const stream = Readable.from(buffer.toString());
 
@@ -81,7 +73,6 @@ export async function POST(req: NextRequest) {
         },
         complete: function (results) {
           results.data.forEach((row) => {
-            console.log("Row data parsed:", row);
             rows.push(row);
           });
           resolve();
@@ -94,7 +85,6 @@ export async function POST(req: NextRequest) {
     });
 
     for (const row of rows) {
-      console.log("Processing individual row:", row);
       await processRow(row, schoolData);
     }
 
@@ -147,8 +137,6 @@ async function processRow(row: any, schoolData: any) {
     TeacherEmail: row["TeacherEmail"],
   };
 
-  console.log("Processing row with extracted data:", extractedData);
-
   await connectToDatabase();
 
   let school = await School.findOne({ name: schoolData.name });
@@ -157,27 +145,22 @@ async function processRow(row: any, schoolData: any) {
       ...schoolData,
     });
     await school.save();
-    console.log("Created new school:", school);
-  } else {
-    console.log("Found existing school:", school);
   }
+  const normalizedEmail = extractedData.TeacherEmail.toLowerCase();
 
-  let teacher = await User.findOne({
-    email: extractedData.TeacherEmail,
-    role: "teacher",
-  });
-  if (!teacher) {
-    teacher = new User({
-      name: extractedData.TeacherName,
-      email: extractedData.TeacherEmail,
-      role: "teacher",
-      school: school._id,
-    });
-    await teacher.save();
-    school.teachers.push(teacher._id);
-    console.log("Created new teacher:", teacher);
-  } else {
-    console.log("Found existing teacher:", teacher);
+  let teacher;
+  console.log("normalizedEmail:", normalizedEmail);
+
+  try {
+    teacher = await User.findOneAndUpdate(
+      { email: normalizedEmail, role: "teacher" },
+      { $set: { name: extractedData.TeacherName, school: school._id } },
+      { upsert: true, new: true } // upsert: create if not exists, new: return the updated/new document
+    );
+    console.log("Teacher processed:", teacher);
+  } catch (error) {
+    console.log("Error in teacher processing:", error);
+    return; // Early exit on error
   }
 
   let classDoc = await Class.findOne({
@@ -185,18 +168,16 @@ async function processRow(row: any, schoolData: any) {
     subject: extractedData.ClassSubject,
     school: school._id,
   });
+
   if (!classDoc) {
     classDoc = new Class({
       name: extractedData.ClassName,
       subject: extractedData.ClassSubject,
-      teacher: teacher._id,
+      teacher: teacher?._id,
       school: school._id,
     });
     await classDoc.save();
     school.classes.push(classDoc._id);
-    console.log("Created new class:", classDoc);
-  } else {
-    console.log("Found existing class:", classDoc);
   }
 
   let student = await User.findOne({
@@ -214,12 +195,10 @@ async function processRow(row: any, schoolData: any) {
     await student.save();
     school.students.push(student._id);
     classDoc.students.push(student._id);
-    console.log("Created new student:", student);
   } else {
     if (!student.classes.includes(classDoc._id)) {
       student.classes.push(classDoc._id);
       await student.save();
-      console.log("Added class to existing student:", student);
     }
   }
 

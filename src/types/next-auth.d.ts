@@ -1,16 +1,19 @@
-// types/next-auth.d.ts
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth from "next-auth";
+import { DefaultSession, DefaultUser } from "next-auth";
 
+// Define custom types for the session and user
 declare module "next-auth" {
-  interface User {
-    role: string;
-    school: string | null; // Add the school field
-  }
-
   interface Session {
     user: {
+      id: string;
       role: string;
-      school: string | null; // Add the school field
+      provider?: string;
+      providerId?: string;
     } & DefaultSession["user"];
+  }
+
+  interface User extends DefaultUser {
+    role: string;
+    providerId?: string;
   }
 }
