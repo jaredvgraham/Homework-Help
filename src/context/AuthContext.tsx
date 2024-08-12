@@ -24,15 +24,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const fetchRole = async () => {
-      const res = await axios.get("/api/getRole");
-      setUser(res.data);
-      console.log(res.data);
-      if (
-        res.data !== pathname.startsWith(res.data) &&
-        pathname !== "/" &&
-        res.data !== "admin" &&
-        pathname !== "/login"
-      ) {
+      try {
+        const res = await axios.get("/api/getRole");
+        setUser(res.data);
+        console.log(res.data);
+        if (
+          res.data !== pathname.startsWith(res.data) &&
+          pathname !== "/" &&
+          res.data !== "admin" &&
+          pathname !== "/login"
+        ) {
+        }
+      } catch (error) {
+        console.log(error);
       }
     };
     fetchRole();

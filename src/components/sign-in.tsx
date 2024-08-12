@@ -1,4 +1,5 @@
 import { signIn } from "@/auth";
+import { SignOut } from "./Logout";
 
 export default function SignIn() {
   return (
@@ -35,6 +36,7 @@ export default function SignIn() {
             Sign in with Google
           </button>
         </form>
+        <SignOut />
       </div>
     </div>
   );
