@@ -2,6 +2,7 @@ import { auth } from "@/auth";
 import connectToDatabase from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/UserModel";
+import Class from "@/models/ClassModel";
 
 export async function GET(req: NextRequest) {
   const session = await auth();
@@ -25,8 +26,15 @@ export async function GET(req: NextRequest) {
         { status: 400 }
       );
     }
-    const studentClasses = user.classes;
-    return NextResponse.json({ classes: studentClasses });
+    const studentClassIds = user.classes;
+    let studentClasses: any[] = [];
+    for (let i = 0; i < studentClassIds.length; i++) {
+      const studentClass = await Class.findById(studentClassIds[i]);
+      if (studentClass) {
+        studentClasses.push(studentClass);
+      }
+    }
+    return NextResponse.json({ classes: studentClasses }, { status: 200 });
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
