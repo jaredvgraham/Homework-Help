@@ -29,11 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const res = await axios.get("/api/getRole");
         setUser(res.data);
         console.log(res.data);
-        if (
-          res.data !== pathname.startsWith(res.data) &&
-          pathname !== "/" &&
-          res.data !== "admin"
-        ) {
+        if (res.data !== pathname.startsWith(res.data) && pathname !== "/") {
           router.push(`/${res.data}`);
         }
       } catch (error) {

@@ -1,7 +1,16 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const LandingNav = () => {
+  const pathname = usePathname();
+  const isHome = pathname === "/" || pathname === "/login";
+
+  if (!isHome) {
+    return null;
+  }
+
   return (
     <header className="bg-white shadow-md py-6 text-gray-500">
       <div className="container mx-auto flex justify-between items-center">

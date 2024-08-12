@@ -4,6 +4,7 @@ import "./globals.css";
 import LandingNav from "@/components/navbars/LandingNav";
 import SessionWrapper from "@/components/SessionWrapper";
 import { AuthProvider } from "@/context/AuthContext";
+import StudentSidebar from "@/components/sidebars/StudentSidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <AuthProvider>
         <html lang="en">
           <body className={inter.className}>
+            <StudentSidebar />
             <LandingNav />
+
             {children}
           </body>
         </html>
