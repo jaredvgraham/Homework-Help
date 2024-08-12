@@ -17,10 +17,8 @@ export async function GET(req: NextRequest) {
   try {
     await connectToDatabase();
     const user = await User.findOne({ email: session.user.email });
-    user.role = "admin"; // Example operation
-    await user.save();
 
-    return NextResponse.json(user);
+    return NextResponse.json(user.role);
   } catch (error) {
     console.error(error);
     return NextResponse.json(

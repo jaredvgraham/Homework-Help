@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import LandingNav from "@/components/navbars/LandingNav";
 import SessionWrapper from "@/components/SessionWrapper";
+import { AuthProvider } from "@/context/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,12 +19,14 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
-      <html lang="en">
-        <body className={inter.className}>
-          <LandingNav />
-          {children}
-        </body>
-      </html>
+      <AuthProvider>
+        <html lang="en">
+          <body className={inter.className}>
+            <LandingNav />
+            {children}
+          </body>
+        </html>
+      </AuthProvider>
     </SessionWrapper>
   );
 }

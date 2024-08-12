@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface IUser extends Document {
   email: string;
   name: string;
-  role: "student" | "parent" | "teacher" | "solo" | "admin";
+  role: "student" | "parent" | "teacher" | "solo" | "admin" | "none";
   school?: mongoose.Types.ObjectId;
   classes?: mongoose.Types.ObjectId[];
   parent?: mongoose.Types.ObjectId;
@@ -18,8 +18,8 @@ const UserSchema: Schema = new Schema(
     name: { type: String, required: true },
     role: {
       type: String,
-      enum: ["student", "parent", "teacher", "solo", "admin"],
-      default: "solo",
+      enum: ["student", "parent", "teacher", "solo", "admin", "none"],
+      default: "none",
     },
     school: { type: Schema.Types.ObjectId, ref: "School" },
     classes: [{ type: Schema.Types.ObjectId, ref: "Class" }],
