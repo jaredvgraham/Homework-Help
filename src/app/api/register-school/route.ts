@@ -76,6 +76,9 @@ export async function POST(req: NextRequest) {
       Papa.parse(stream, {
         header: true,
         dynamicTyping: true,
+        transformHeader: (header) => {
+          return normalizeHeader(header);
+        },
         complete: function (results) {
           results.data.forEach((row) => {
             console.log("Row data parsed:", row);
@@ -103,6 +106,35 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function normalizeHeader(header: string): string {
+  const headerMap = {
+    "student[_\\s-]?name|student[_\\s-]?full[_\\s-]?name|student[_\\s-]?first[_\\s-]?name|student[_\\s-]?last[_\\s-]?name":
+      "StudentName",
+    "student[_\\s-]?email": "StudentEmail",
+    "class[_\\s-]?name": "ClassName",
+    "class[_\\s-]?subject": "ClassSubject",
+    "teacher[_\\s-]?name|teacher[_\\s-]?full[_\\s-]?name|teacher[_\\s-]?first[_\\s-]?name|teacher[_\\s-]?last[_\\s-]?name":
+      "TeacherName",
+    "teacher[_\\s-]?email": "TeacherEmail",
+    "school[_\\s-]?name": "SchoolName",
+    "school[_\\s-]?address": "SchoolAddress",
+    "school[_\\s-]?city": "SchoolCity",
+    "school[_\\s-]?state": "SchoolState",
+    "school[_\\s-]?zip": "SchoolZip",
+    "school[_\\s-]?phone": "SchoolPhone",
+    "school[_\\s-]?email": "SchoolEmail",
+    website: "Website",
+  };
+
+  for (const pattern in headerMap) {
+    const regex = new RegExp(pattern, "i");
+    if (regex.test(header)) {
+      return headerMap[pattern as keyof typeof headerMap];
+    }
+  }
+  return header;
 }
 
 async function processRow(row: any, schoolData: any) {
