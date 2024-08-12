@@ -12,6 +12,9 @@
     "@auth/mongodb-adapter": "^3.4.2",
     "axios": "^1.7.3",
     "bcrypt": "^5.1.1",
+    "busboy": "^1.6.0",
+    "csv-parser": "^3.0.0",
+    "formidable": "^3.5.1",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.2",
     "next": "14.2.5",
@@ -20,6 +23,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/formidable": "^3.4.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
