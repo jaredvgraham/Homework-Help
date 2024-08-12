@@ -33,7 +33,7 @@ const RegisterSchoolForm = () => {
     });
 
     try {
-      const res = await axios.post("/api/registerSchool", data, {
+      const res = await axios.post("/api/register-school", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
