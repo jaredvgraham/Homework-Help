@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
       const studentClass = await Class.findById(studentClassIds[i]);
       if (studentClass) {
         studentClasses.push(studentClass);
+        console.log(studentClass);
       }
     }
     return NextResponse.json({ classes: studentClasses }, { status: 200 });
