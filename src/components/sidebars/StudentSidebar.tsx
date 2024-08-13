@@ -2,26 +2,30 @@
 
 import { Class } from "@/types";
 import axios from "axios";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   FaBeer,
   FaBookOpen,
   FaCalculator,
   FaFlask,
+  FaHome,
   FaPaintBrush,
 } from "react-icons/fa";
 
 const StudentSidebar = () => {
   const icons = {
-    Math: <FaCalculator style={{ color: "blue" }} />,
-    Science: <FaFlask style={{ color: "yellow" }} />,
-    Art: <FaPaintBrush style={{ color: "black" }} />,
-    History: <FaBookOpen style={{ color: "green" }} />,
+    Math: <FaCalculator style={{ color: "white", marginRight: "10px" }} />,
+    Science: <FaFlask style={{ color: "white", marginRight: "10px" }} />,
+    Art: <FaPaintBrush style={{ color: "white", marginRight: "10px" }} />,
+    History: <FaBookOpen style={{ color: "white", marginRight: "10px" }} />,
   };
 
   const [classes, setClasses] = useState<Class[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
   const pathname = usePathname();
 
   const isStudentPage = pathname.startsWith("/student");
@@ -45,6 +49,22 @@ const StudentSidebar = () => {
     fetchClasses();
   }, []);
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        sidebarRef.current &&
+        !sidebarRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [sidebarRef]);
+
   if (!isStudentPage) {
     return null;
   }
@@ -61,40 +81,52 @@ const StudentSidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`w-64 h-screen bg-gray-800 text-white shadow-lg p-4 overflow-y-auto transform ${
+        ref={sidebarRef}
+        className={`w-64 h-screen bg-white text-white shadow-2xl p-4 overflow-y-auto transform font-light ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:relative z-20`}
       >
-        <h2 className="text-2xl font-semibold mb-4">Classes</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-blue-500 text-center p-4">
+          Classes
+        </h2>
         <ul>
+          <li className="mb-2">
+            <Link
+              href={"/student"}
+              className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
+                pathname === "/student" ? "bg-blue-500" : "bg-black"
+              }`}
+            >
+              <FaHome style={{ color: "white", marginRight: "10px" }} />
+              Dashboard
+            </Link>
+          </li>
           {classes &&
             classes.map((studentClass) => (
-              <li key={studentClass._id} className="mb-2">
-                <h1 className="text-lg">
-                  {icons[studentClass.name as keyof typeof icons]}
+              <div key={studentClass._id} className="">
+                <li key={studentClass._id} className="mb-2 ">
+                  <Link
+                    href={`/student/${studentClass.name.toLocaleLowerCase()}/${
+                      studentClass._id
+                    }`}
+                    className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
+                      pathname ===
+                      `/student/${studentClass.name.toLocaleLowerCase()}/${
+                        studentClass._id
+                      }`
+                        ? "bg-blue-500"
+                        : "bg-black"
+                    }`}
+                  >
+                    {icons[studentClass.name as keyof typeof icons]}
 
-                  {studentClass.name}
-                </h1>
-              </li>
+                    {studentClass.name}
+                  </Link>
+                </li>
+              </div>
             ))}
         </ul>
       </div>
-
-      {/* Main content area */}
-      <div className="  p-4">
-        {/* Your main content goes here */}
-        <p>
-          Here is the main content that will be displayed next to the sidebar.
-        </p>
-      </div>
-
-      {/* Overlay for small screens */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-10 bg-transparent"
-          onClick={() => setIsOpen(false)}
-        ></div>
-      )}
     </div>
   );
 };
