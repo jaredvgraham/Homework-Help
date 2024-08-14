@@ -21,7 +21,7 @@ const Questions: React.FC<QuestionsProps> = ({ data, updateData }) => {
       type: "multiple_choice",
       questionText: "",
       options: [],
-      correctOptionId: "",
+      correctChoice: "",
     };
     const updatedQuestions = [...questions, newQuestion];
     setQuestions(updatedQuestions);

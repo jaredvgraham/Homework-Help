@@ -31,11 +31,16 @@ const CreateAssignment = () => {
   };
 
   const handleSaveAssignment = async () => {
-    console.log("Saving assignment:", assignmentData);
+    console.log("Saving assignment:", JSON.stringify(assignmentData, null, 2));
+    console.log("date before", assignmentData.details.dueDate);
 
+    assignmentData.details.dueDate = new Date(
+      assignmentData.details.dueDate
+    ).toISOString();
+    console.log("date after", assignmentData.details.dueDate);
     try {
       const response = await axios.post(
-        "/api/teacher/assignments",
+        "/api/teacher/create-assignment",
         assignmentData
       );
       if (response.status === 200) {

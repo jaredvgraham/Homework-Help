@@ -26,7 +26,7 @@ export interface Question {
   type: QuestionType;
   questionText: string;
   options?: Option[]; // For multiple-choice
-  correctOptionId?: string; // For multiple-choice
+  correctChoice?: string; // For multiple-choice
   answerText?: string; // For short-answer
 }
 
@@ -70,7 +70,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   const handleCorrectOptionChange = (id: string) => {
-    updateQuestion({ ...question, correctOptionId: id });
+    updateQuestion({ ...question, correctChoice: id });
   };
 
   const handleAnswerTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,9 +123,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
               </IconButton>
               <FormControl>
                 <Select
-                  value={
-                    question.correctOptionId === option.id ? option.id : ""
-                  }
+                  value={question.correctChoice === option.id ? option.id : ""}
                   onChange={() => handleCorrectOptionChange(option.id)}
                   displayEmpty
                   inputProps={{ "aria-label": "Select as correct" }}

@@ -6,11 +6,13 @@ import Question, { IQuestion } from "@/models/QuestionModel";
 import Assignment from "@/models/AssignmentModel";
 
 interface CreateAssignmentRequest {
-  title: string;
-  description: string;
-  class: string;
+  details: {
+    title: string;
+    description: string;
+    class: string;
+    dueDate: Date;
+  };
   youtubeLinks: string[];
-  dueDate: string;
   questions: Array<{
     questionText: string;
     choices: string[];
@@ -41,15 +43,14 @@ export async function POST(req: NextRequest) {
       );
     }
     const body: CreateAssignmentRequest = await req.json();
+
     const {
-      title,
-      description,
-      class: classId,
-      youtubeLinks,
-      dueDate,
+      details: { title, description, class: classId, dueDate },
       questions,
+      youtubeLinks,
     } = body;
-    console.log(body);
+
+    console.log("bod is thisssss:", body);
 
     const studentIds = await User.find({
       classes: classId,
@@ -71,6 +72,8 @@ export async function POST(req: NextRequest) {
       })
     );
 
+    console.log("creating assignment with");
+
     // Creat assignment with question IDs
     const assignment = new Assignment({
       title,
@@ -82,6 +85,7 @@ export async function POST(req: NextRequest) {
       dueDate,
       questions: questionIds,
     });
+    console.log("creating assignment with", assignment);
 
     await assignment.save();
 

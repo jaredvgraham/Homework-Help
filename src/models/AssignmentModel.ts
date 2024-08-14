@@ -6,7 +6,7 @@ export interface IAssignment extends Document {
   class: mongoose.Types.ObjectId;
   teacher: mongoose.Types.ObjectId;
   students: mongoose.Types.ObjectId[];
-  youtubeLinks: string[];
+  youtubeLinks?: string[];
   submissions: mongoose.Types.ObjectId[];
   dueDate: Date;
   questions: mongoose.Types.ObjectId[]; // Add this line to connect questions

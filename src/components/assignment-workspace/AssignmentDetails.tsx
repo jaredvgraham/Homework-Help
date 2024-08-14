@@ -1,7 +1,17 @@
 import { useForm, Controller } from "react-hook-form";
-import { TextField, Button, Box } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Box,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface AssignmentDetailsProps {
   data: any;
@@ -11,6 +21,7 @@ interface AssignmentDetailsProps {
 const schema = yup.object().shape({
   title: yup.string().required("Title is required"),
   description: yup.string().required("Description is required"),
+  class: yup.string().required("Class is required"),
   dueDate: yup.date().required("Due date is required"),
 });
 
@@ -18,19 +29,45 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
   data,
   updateData,
 }) => {
+  const [classes, setClasses] = useState<any[]>([]);
+
   const {
     handleSubmit,
     control,
+    setValue,
+    watch,
     formState: { errors },
   } = useForm({
-    defaultValues: data,
+    defaultValues: {
+      ...data,
+      class: data.class || "", // Ensure `class` has a default value
+    },
     resolver: yupResolver(schema),
   });
+
+  const selectedClass = watch("class");
+
+  useEffect(() => {
+    const fetchClasses = async () => {
+      try {
+        const res = await axios.get("/api/teacher/classes"); // Adjust the endpoint as needed
+        setClasses(res.data); // Assuming the backend returns an array of classes
+      } catch (error) {
+        console.error("Failed to fetch classes:", error);
+      }
+    };
+
+    fetchClasses();
+  }, []);
 
   const onSubmit = (formData: any) => {
     updateData(formData);
     alert("Assignment details saved!");
   };
+
+  useEffect(() => {
+    console.log("Selected class:", selectedClass);
+  }, [selectedClass]);
 
   return (
     <Box
@@ -71,6 +108,39 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
               errors.description ? String(errors.description.message) : ""
             }
           />
+        )}
+      />
+
+      <Controller
+        name="class"
+        control={control}
+        render={({ field }) => (
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Class</InputLabel>
+            <Select
+              {...field}
+              label="Class"
+              error={!!errors.class}
+              value={selectedClass || ""}
+              onChange={(e) => {
+                setValue("class", e.target.value);
+              }}
+              sx={{ color: "black", backgroundColor: "white" }}
+            >
+              {classes.length > 0 ? (
+                classes.map((cls: any) => (
+                  <MenuItem key={cls._id} value={cls._id}>
+                    {cls.name}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem disabled>No classes available</MenuItem>
+              )}
+            </Select>
+            {errors.class && (
+              <p style={{ color: "red" }}>{String(errors.class.message)}</p>
+            )}
+          </FormControl>
         )}
       />
 
