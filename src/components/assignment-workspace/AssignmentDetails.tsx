@@ -111,7 +111,7 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
         )}
       />
 
-      <Controller
+      {/* <Controller
         name="class"
         control={control}
         render={({ field }) => (
@@ -162,7 +162,7 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
             helperText={errors.dueDate ? String(errors.dueDate.message) : ""}
           />
         )}
-      />
+      /> */}
 
       <Button variant="contained" color="primary" type="submit">
         Save Details

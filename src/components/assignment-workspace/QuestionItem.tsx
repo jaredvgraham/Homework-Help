@@ -80,7 +80,7 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   return (
     <Box border={1} borderRadius={2} borderColor="grey.300" p={2} mb={2}>
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <FormControl variant="outlined" sx={{ minWidth: 150 }}>
+        <FormControl variant="outlined" sx={{ minWidth: 800 }}>
           <InputLabel>Question Type</InputLabel>
           <Select
             value={question.type}
