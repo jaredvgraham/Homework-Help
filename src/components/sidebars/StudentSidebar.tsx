@@ -70,7 +70,7 @@ const StudentSidebar = () => {
   }
 
   return (
-    <div className="flex">
+    <div className="relative">
       {/* Toggle button for small screens */}
       <button
         className="md:hidden p-2 bg-gray-800 text-white"

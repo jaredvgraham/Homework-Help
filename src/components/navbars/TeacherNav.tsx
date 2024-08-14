@@ -1,7 +1,51 @@
-import React from "react";
+"use client";
 
-const TeacherNav = () => {
-  return <div>TeacherNav</div>;
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { FaHome } from "react-icons/fa";
+
+const TeacherNavBar = () => {
+  const pathname = usePathname();
+
+  const isTeacher = pathname.includes("/teacher");
+
+  if (!isTeacher) {
+    return null;
+  }
+
+  return (
+    <nav className="bg-blue-600 p-4 shadow-md">
+      <div className="container mx-auto flex justify-between items-center">
+        <div>
+          <Link
+            href="/teacher"
+            className="text-white text-lg font-bold flex items-center"
+          >
+            <FaHome className="mr-2" />
+            Home
+          </Link>
+        </div>
+        <div className="flex space-x-4">
+          {pathname === "/teacher/create-assignment" && (
+            <>
+              <Link
+                href="/teacher/assignments"
+                className="text-white hover:text-gray-300"
+              >
+                View Assignments
+              </Link>
+              <Link
+                href="/teacher/assign-students"
+                className="text-white hover:text-gray-300"
+              >
+                Assign to Students
+              </Link>
+            </>
+          )}
+        </div>
+      </div>
+    </nav>
+  );
 };
 
-export default TeacherNav;
+export default TeacherNavBar;
