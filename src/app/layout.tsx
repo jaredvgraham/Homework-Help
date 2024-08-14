@@ -6,6 +6,7 @@ import SessionWrapper from "@/components/SessionWrapper";
 import { AuthProvider } from "@/context/AuthContext";
 import StudentSidebar from "@/components/sidebars/StudentSidebar";
 import TeacherNavBar from "@/components/navbars/TeacherNav";
+import TeacherSidebar from "@/components/sidebars/TeacherSidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,9 +26,11 @@ export default function RootLayout({
         <html lang="en">
           <body className={inter.className}>
             <LandingNav />
+            <TeacherNavBar />
 
             <div className="flex">
               <StudentSidebar />
+              <TeacherSidebar />
 
               {children}
             </div>

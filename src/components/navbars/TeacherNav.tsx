@@ -9,7 +9,9 @@ const TeacherNavBar = () => {
 
   const isTeacher = pathname.includes("/teacher");
 
-  if (!isTeacher) {
+  const isWorkspace = pathname.includes("/teacher/create-assignment");
+
+  if (!isTeacher || isWorkspace) {
     return null;
   }
 
