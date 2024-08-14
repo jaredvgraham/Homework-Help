@@ -28,22 +28,20 @@ const TeacherNavBar = () => {
           </Link>
         </div>
         <div className="flex space-x-4">
-          {pathname === "/teacher/create-assignment" && (
-            <>
-              <Link
-                href="/teacher/assignments"
-                className="text-white hover:text-gray-300"
-              >
-                View Assignments
-              </Link>
-              <Link
-                href="/teacher/assign-students"
-                className="text-white hover:text-gray-300"
-              >
-                Assign to Students
-              </Link>
-            </>
-          )}
+          <>
+            <Link
+              href="/teacher/view-assignments"
+              className="text-white hover:text-gray-300"
+            >
+              View Assignments
+            </Link>
+            <Link
+              href="/teacher/create-assignment"
+              className="text-white hover:text-gray-300"
+            >
+              Create Assignment
+            </Link>
+          </>
         </div>
       </div>
     </nav>
