@@ -81,50 +81,38 @@ const CreateAssignment = () => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <AppBar
-        position="fixed"
-        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-      >
-        <Toolbar>
+    <div className="flex">
+      <header className="fixed w-full bg-blue-600 z-10">
+        <div className="flex items-center p-4">
           <Link href="/teacher">
-            <Typography variant="h6" noWrap component="div">
-              Create Assignment
-            </Typography>
+            <h1 className="text-white text-xl">Create Assignment</h1>
           </Link>
-
           <Link href="/teacher" className="ml-auto">
-            <FaHome />
+            <FaHome className="text-white" />
           </Link>
-        </Toolbar>
-      </AppBar>
+        </div>
+      </header>
 
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          [`& .MuiDrawer-paper`]: {
-            width: drawerWidth,
-            boxSizing: "border-box",
-          },
-        }}
+      <aside
+        className="fixed h-full bg-gray-100"
+        style={{ width: `${drawerWidth}px` }}
       >
-        <Toolbar />
-        <Sidebar
-          selectedSection={selectedSection}
-          setSelectedSection={setSelectedSection}
-          handleSaveAssignment={handleSaveAssignment}
-        />
-      </Drawer>
+        <div className="mt-16">
+          <Sidebar
+            selectedSection={selectedSection}
+            setSelectedSection={setSelectedSection}
+            handleSaveAssignment={handleSaveAssignment}
+          />
+        </div>
+      </aside>
 
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: `calc(100% - ${drawerWidth}px)` }}
+      <main
+        className="flex-grow p-6"
+        style={{ marginLeft: `${drawerWidth}px` }}
       >
-        <Toolbar />
-        {renderContent()}
-      </Box>
-    </Box>
+        <div className="mt-16">{renderContent()}</div>
+      </main>
+    </div>
   );
 };
 

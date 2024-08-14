@@ -1,13 +1,4 @@
 import { useForm, Controller } from "react-hook-form";
-import {
-  TextField,
-  Button,
-  Box,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-} from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useEffect, useState } from "react";
@@ -70,24 +61,30 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
   }, [selectedClass]);
 
   return (
-    <Box
-      component="form"
+    <form
       onSubmit={handleSubmit(onSubmit)}
-      sx={{ maxWidth: 600 }}
+      className="max-w-xl mx-auto p-4 bg-white shadow-md rounded"
     >
       <Controller
         name="title"
         control={control}
         render={({ field }) => (
-          <TextField
-            {...field}
-            label="Assignment Title"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            error={!!errors.title}
-            helperText={errors.title ? String(errors.title.message) : ""}
-          />
+          <div className="mb-4">
+            <label className="block text-gray-700">Assignment Title</label>
+            <input
+              {...field}
+              type="text"
+              className={`mt-1 block w-full px-3 py-2 border ${
+                errors.title ? "border-red-500" : "border-gray-300"
+              } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              placeholder="Enter assignment title"
+            />
+            {errors.title && (
+              <p className="text-red-500 text-sm mt-1">
+                {String(errors.title.message)}
+              </p>
+            )}
+          </div>
         )}
       />
 
@@ -95,79 +92,34 @@ const AssignmentDetails: React.FC<AssignmentDetailsProps> = ({
         name="description"
         control={control}
         render={({ field }) => (
-          <TextField
-            {...field}
-            label="Assignment Description"
-            variant="outlined"
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-            error={!!errors.description}
-            helperText={
-              errors.description ? String(errors.description.message) : ""
-            }
-          />
-        )}
-      />
-
-      {/* <Controller
-        name="class"
-        control={control}
-        render={({ field }) => (
-          <FormControl fullWidth margin="normal">
-            <InputLabel>Class</InputLabel>
-            <Select
+          <div className="mb-4">
+            <label className="block text-gray-700">
+              Assignment Description
+            </label>
+            <textarea
               {...field}
-              label="Class"
-              error={!!errors.class}
-              value={selectedClass || ""}
-              onChange={(e) => {
-                setValue("class", e.target.value);
-              }}
-              sx={{ color: "black", backgroundColor: "white" }}
-            >
-              {classes.length > 0 ? (
-                classes.map((cls: any) => (
-                  <MenuItem key={cls._id} value={cls._id}>
-                    {cls.name}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem disabled>No classes available</MenuItem>
-              )}
-            </Select>
-            {errors.class && (
-              <p style={{ color: "red" }}>{String(errors.class.message)}</p>
+              rows={4}
+              className={`mt-1 block w-full px-3 py-2 border ${
+                errors.description ? "border-red-500" : "border-gray-300"
+              } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              placeholder="Enter assignment description"
+            />
+            {errors.description && (
+              <p className="text-red-500 text-sm mt-1">
+                {String(errors.description.message)}
+              </p>
             )}
-          </FormControl>
+          </div>
         )}
       />
 
-      <Controller
-        name="dueDate"
-        control={control}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Due Date"
-            type="date"
-            variant="outlined"
-            fullWidth
-            InputLabelProps={{
-              shrink: true,
-            }}
-            margin="normal"
-            error={!!errors.dueDate}
-            helperText={errors.dueDate ? String(errors.dueDate.message) : ""}
-          />
-        )}
-      /> */}
-
-      <Button variant="contained" color="primary" type="submit">
+      <button
+        type="submit"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
         Save Details
-      </Button>
-    </Box>
+      </button>
+    </form>
   );
 };
 

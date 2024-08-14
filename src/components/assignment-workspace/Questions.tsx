@@ -58,15 +58,27 @@ const Questions: React.FC<QuestionsProps> = ({ data, updateData }) => {
   };
 
   return (
-    <Box>
-      <Button
-        variant="contained"
-        startIcon={<Add />}
+    <div className="p-4">
+      <button
         onClick={addQuestion}
-        sx={{ mb: 2 }}
+        className="flex items-center px-4 py-2 bg-blue-500 text-white rounded shadow mb-4"
       >
-        Add Question
-      </Button>
+        <span className="mr-2">Add Question</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          className="h-5 w-5"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
 
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="questions">
@@ -83,6 +95,7 @@ const Questions: React.FC<QuestionsProps> = ({ data, updateData }) => {
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
+                      className="mb-4 p-4 bg-gray-100 rounded shadow"
                     >
                       <QuestionItem
                         question={question}
@@ -101,15 +114,13 @@ const Questions: React.FC<QuestionsProps> = ({ data, updateData }) => {
         </Droppable>
       </DragDropContext>
 
-      <Button
-        variant="contained"
-        color="primary"
+      <button
         onClick={handleSave}
-        sx={{ mt: 2 }}
+        className="mt-4 px-4 py-2 bg-green-500 text-white rounded shadow"
       >
         Save Questions
-      </Button>
-    </Box>
+      </button>
+    </div>
   );
 };
 

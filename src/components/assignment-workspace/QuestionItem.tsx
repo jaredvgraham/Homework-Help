@@ -78,85 +78,94 @@ const QuestionItem: React.FC<QuestionItemProps> = ({
   };
 
   return (
-    <Box border={1} borderRadius={2} borderColor="grey.300" p={2} mb={2}>
-      <Box display="flex" justifyContent="space-between" alignItems="center">
-        <FormControl variant="outlined" sx={{ minWidth: 800 }}>
-          <InputLabel>Question Type</InputLabel>
-          <Select
+    <div className="border border-gray-300 rounded p-4 mb-4">
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex-1 mr-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Question Type
+          </label>
+          <select
             value={question.type}
             onChange={handleQuestionTypeChange}
-            label="Question Type"
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           >
-            <MenuItem value="multiple_choice">Multiple Choice</MenuItem>
-            <MenuItem value="short_answer">Short Answer</MenuItem>
-          </Select>
-        </FormControl>
-        <IconButton onClick={removeQuestion}>
-          <Delete />
-        </IconButton>
-      </Box>
+            <option value="multiple_choice">Multiple Choice</option>
+            <option value="short_answer">Short Answer</option>
+          </select>
+        </div>
+        <button
+          onClick={removeQuestion}
+          className="text-red-500 hover:text-red-700"
+        >
+          &#10005;
+        </button>
+      </div>
 
-      <TextField
-        label="Question Text"
-        variant="outlined"
-        fullWidth
-        margin="normal"
-        value={question.questionText}
-        onChange={handleQuestionTextChange}
-      />
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">
+          Question Text
+        </label>
+        <input
+          type="text"
+          value={question.questionText}
+          onChange={handleQuestionTextChange}
+          className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        />
+      </div>
 
       {question.type === "multiple_choice" && (
         <>
           {question.options?.map((option) => (
-            <Box key={option.id} display="flex" alignItems="center" mb={1}>
-              <TextField
-                variant="outlined"
-                label="Option Text"
+            <div key={option.id} className="flex items-center mb-2">
+              <input
+                type="text"
                 value={option.text}
                 onChange={(e) =>
                   handleOptionTextChange(option.id, e.target.value)
                 }
-                fullWidth
+                className="flex-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
+                placeholder="Option Text"
               />
-              <IconButton onClick={() => handleRemoveOption(option.id)}>
-                <Delete />
-              </IconButton>
-              <FormControl>
-                <Select
-                  value={question.correctChoice === option.id ? option.id : ""}
-                  onChange={() => handleCorrectOptionChange(option.id)}
-                  displayEmpty
-                  inputProps={{ "aria-label": "Select as correct" }}
-                >
-                  <MenuItem value="">
-                    <em>Mark as Correct</em>
-                  </MenuItem>
-                  <MenuItem value={option.id}>Correct</MenuItem>
-                </Select>
-              </FormControl>
-            </Box>
+              <button
+                onClick={() => handleRemoveOption(option.id)}
+                className="text-red-500 hover:text-red-700"
+              >
+                &#10005;
+              </button>
+              <select
+                value={question.correctChoice === option.id ? option.id : ""}
+                onChange={() => handleCorrectOptionChange(option.id)}
+                className="ml-2 block py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              >
+                <option value="">Mark as Correct</option>
+                <option value={option.id}>Correct</option>
+              </select>
+            </div>
           ))}
-          <Button
-            variant="outlined"
-            startIcon={<Add />}
+          <button
             onClick={handleAddOption}
+            className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
           >
             Add Option
-          </Button>
+          </button>
         </>
       )}
 
       {question.type === "short_answer" && (
-        <TextField
-          label="Answer Text"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={question.answerText}
-          onChange={handleAnswerTextChange}
-        />
+        <div className="mb-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Answer Text
+          </label>
+          <input
+            type="text"
+            value={question.answerText}
+            onChange={handleAnswerTextChange}
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder="Your answer here..."
+          />
+        </div>
       )}
-    </Box>
+    </div>
   );
 };
 

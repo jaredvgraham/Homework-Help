@@ -24,34 +24,28 @@ const Sidebar = ({
   ];
 
   return (
-    <List>
+    <ul className="space-y-2">
       {sections.map((section) => (
-        <ListItemButton
+        <li
           key={section.value}
-          selected={selectedSection === section.value}
+          className={`flex items-center px-4 py-2 cursor-pointer rounded-lg ${
+            selectedSection === section.value
+              ? "bg-blue-500 text-white"
+              : "hover:bg-gray-100"
+          }`}
           onClick={() => setSelectedSection(section.value)}
         >
-          <ListItemIcon>{section.icon}</ListItemIcon>
-          <ListItemText primary={section.text} />
-        </ListItemButton>
+          <span className="mr-2">{section.icon}</span>
+          <span>{section.text}</span>
+        </li>
       ))}
-      <ListItemButton
+      <li
+        className="flex items-center justify-center px-4 py-2 mt-4 cursor-pointer rounded-lg bg-blue-500 text-white hover:bg-blue-600"
         onClick={handleSaveAssignment}
-        sx={{
-          backgroundColor: "primary.main",
-          color: "white",
-          textAlign: "center",
-
-          borderRadius: 2,
-          "&:hover": {
-            backgroundColor: "primary.dark",
-          },
-          mt: 2, // Adds margin at the top
-        }}
       >
-        <ListItemText primary="Save Assignment" />
-      </ListItemButton>
-    </List>
+        Save Assignment
+      </li>
+    </ul>
   );
 };
 
