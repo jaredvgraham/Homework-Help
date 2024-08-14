@@ -9,6 +9,7 @@ export interface IAssignment extends Document {
   youtubeLinks: string[];
   submissions: mongoose.Types.ObjectId[];
   dueDate: Date;
+  questions: mongoose.Types.ObjectId[]; // Add this line to connect questions
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,6 +24,7 @@ const AssignmentSchema: Schema = new Schema(
     youtubeLinks: [{ type: String }],
     submissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
     dueDate: { type: Date, required: true },
+    questions: [{ type: Schema.Types.ObjectId, ref: "Question" }], // Referencing questions
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
