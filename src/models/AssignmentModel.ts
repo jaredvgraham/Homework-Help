@@ -1,14 +1,20 @@
+import { Class } from "@/types";
 import mongoose, { Schema, Document } from "mongoose";
+
+interface ClassDueDate {
+  classId: mongoose.Types.ObjectId;
+  dueDate: Date;
+}
 
 export interface IAssignment extends Document {
   title: string;
   description: string;
-  class: mongoose.Types.ObjectId;
+  class: ClassDueDate[];
   teacher: mongoose.Types.ObjectId;
   students: mongoose.Types.ObjectId[];
   youtubeLinks?: string[];
   submissions: mongoose.Types.ObjectId[];
-  dueDate: Date;
+  // dueDate: Date;
   questions: mongoose.Types.ObjectId[]; // Add this line to connect questions
   createdAt: Date;
   updatedAt: Date;
