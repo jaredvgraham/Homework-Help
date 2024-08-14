@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 
 const RegisterSchoolForm = () => {
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -227,6 +228,9 @@ const RegisterSchoolForm = () => {
             </button>
           </div>
         </form>
+        <button className="text-red" onClick={() => signOut()}>
+          Sign Out
+        </button>
       </div>
     </div>
   );

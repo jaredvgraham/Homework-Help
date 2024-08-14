@@ -1,0 +1,13 @@
+StudentName,StudentEmail,ClassName,ClassSubject,TeacherName,TeacherEmail,SchoolName,SchoolAddress,SchoolCity,SchoolState,SchoolZip,SchoolPhone,SchoolEmail,Website
+John Doe,faroundproduction@gmail.com,Math 101,Mathematics,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+John Doe,faroundproduction@gmail.com,History 201,History,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+John Doe,faroundproduction@gmail.com,Science 301,Science,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Bob Brown,threxbeats@gmail.com,Math 101,Mathematics,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Bob Brown,threxbeats@gmail.com,Science 301,Science,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Bob Brown,threxbeats@gmail.com,History 201,History,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Emma White,neverlosttracker@gmail.com,Math 101,Mathematics,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Emma White,neverlosttracker@gmail.com,Science 301,Science,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Emma White,neverlosttracker@gmail.com,Art 101,Art,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Mike Green,voidensee@gmail.com,English 101,English,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Mike Green,voidensee@gmail.com,History 201,History,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
+Mike Green,voidensee@gmail.com,Science 301,Science,Jane Smith,seelove.co@gmail.com,Sunrise High,123 Main St,Anytown,CA,90210,555-1234,school@example.com,www.sunrisehigh.com
