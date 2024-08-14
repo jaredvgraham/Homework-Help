@@ -1,15 +1,15 @@
 import { Class } from "@/types";
 import mongoose, { Schema, Document } from "mongoose";
 
-interface ClassDueDate {
-  classId: mongoose.Types.ObjectId;
-  dueDate: Date;
-}
+const ClassDueDateSchema = new Schema({
+  classId: mongoose.Types.ObjectId,
+  dueDate: Date,
+});
 
 export interface IAssignment extends Document {
   title: string;
   description: string;
-  class: ClassDueDate[];
+  class: (typeof ClassDueDateSchema)[];
   teacher: mongoose.Types.ObjectId;
   students: mongoose.Types.ObjectId[];
   youtubeLinks?: string[];
@@ -24,12 +24,12 @@ const AssignmentSchema: Schema = new Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    class: { type: Schema.Types.ObjectId, ref: "Class", required: true },
+    class: { type: [ClassDueDateSchema], required: false },
     teacher: { type: Schema.Types.ObjectId, ref: "User", required: true },
     students: [{ type: Schema.Types.ObjectId, ref: "User" }],
     youtubeLinks: [{ type: String }],
     submissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
-    dueDate: { type: Date, required: true },
+    // dueDate: { type: Date, required: true },
     questions: [{ type: Schema.Types.ObjectId, ref: "Question" }], // Referencing questions
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
