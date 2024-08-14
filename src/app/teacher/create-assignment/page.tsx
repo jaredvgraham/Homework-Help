@@ -13,6 +13,8 @@ import AssignmentDetails from "@/components/assignment-workspace/AssignmentDetai
 import Questions from "@/components/assignment-workspace/Questions";
 import Preview from "@/components/assignment-workspace/Preview";
 import axios from "axios";
+import Link from "next/link";
+import { FaHome } from "react-icons/fa";
 
 const drawerWidth = 240;
 
@@ -85,16 +87,15 @@ const CreateAssignment = () => {
         sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            Create Assignment
-          </Typography>
-          <Button
-            color="inherit"
-            sx={{ marginLeft: "auto" }}
-            onClick={handleSaveAssignment}
-          >
-            Save Assignment
-          </Button>
+          <Link href="/teacher">
+            <Typography variant="h6" noWrap component="div">
+              Create Assignment
+            </Typography>
+          </Link>
+
+          <Link href="/teacher" className="ml-auto">
+            <FaHome />
+          </Link>
         </Toolbar>
       </AppBar>
 
@@ -112,6 +113,7 @@ const CreateAssignment = () => {
         <Sidebar
           selectedSection={selectedSection}
           setSelectedSection={setSelectedSection}
+          handleSaveAssignment={handleSaveAssignment}
         />
       </Drawer>
 

@@ -1,10 +1,8 @@
-// components/Preview.tsx
 import {
   Box,
   Typography,
   List,
   ListItem,
-  ListItemText,
   RadioGroup,
   FormControlLabel,
   Radio,
@@ -40,12 +38,16 @@ const Preview: React.FC<PreviewProps> = ({ data }) => {
       <List>
         {questions.map((question, index) => (
           <ListItem key={question.id} alignItems="flex-start">
-            <ListItemText
-              primary={`Q${index + 1}: ${
-                question.questionText || "No question text."
-              }`}
-              secondary={
-                question.type === "multiple_choice" ? (
+            <Box component="div">
+              <Box>
+                <Typography component="span" variant="body1">
+                  {`Q${index + 1}: ${
+                    question.questionText || "No question text."
+                  }`}
+                </Typography>
+              </Box>
+              <Box component="div">
+                {question.type === "multiple_choice" ? (
                   <RadioGroup>
                     {question.options?.map((option) => (
                       <FormControlLabel
@@ -62,9 +64,9 @@ const Preview: React.FC<PreviewProps> = ({ data }) => {
                     fullWidth
                     placeholder="Your answer here..."
                   />
-                )
-              }
-            />
+                )}
+              </Box>
+            </Box>
           </ListItem>
         ))}
       </List>
