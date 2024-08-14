@@ -23,10 +23,12 @@ export default function RootLayout({
       <AuthProvider>
         <html lang="en">
           <body className={inter.className}>
-            <StudentSidebar />
             <LandingNav />
 
-            {children}
+            <div className="flex">
+              <StudentSidebar />
+              {children}
+            </div>
           </body>
         </html>
       </AuthProvider>
