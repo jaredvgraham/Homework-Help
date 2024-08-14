@@ -60,6 +60,8 @@ export async function GET(req: NextRequest) {
         }
       );
     }
+    console.log("assignments are:", assignments);
+
     return NextResponse.json({ assignments }, { status: 200 });
   } catch (error: any) {
     console.error(error);

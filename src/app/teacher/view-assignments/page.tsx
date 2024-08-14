@@ -10,7 +10,7 @@ const ViewAssignments = () => {
   };
 
   type Class = {
-    id: string;
+    _id: string;
     name: string;
     subject: string;
     teacher: string;
@@ -20,7 +20,7 @@ const ViewAssignments = () => {
   };
 
   type Assignment = {
-    id: string;
+    _id: string;
     title: string;
     classes: ClassAndDue[];
     teacher: string;
@@ -45,7 +45,9 @@ const ViewAssignments = () => {
     const fetchAssignments = async () => {
       try {
         const res = await axios.get("/api/teacher/get-assignments");
-        setAssignments(res.data);
+
+        setAssignments(res.data.assignments);
+        console.log("assignments are:", res.data.assignments);
       } catch (error) {
         console.error("Failed to fetch assignments:", error);
       }
@@ -58,12 +60,15 @@ const ViewAssignments = () => {
   const handleAssign = async (assignmentId: string) => {
     const assignmentToAssign = {
       assignmentId,
-      classId: selectedClass,
-      dueDate: selectedDueDate,
+      classes: [{ classId: selectedClass, dueDate: selectedDueDate }],
     };
+    console.log("assignmentToAssign:", assignmentToAssign);
 
     try {
-      const res = await axios.post("/api/teacher/assign", assignmentToAssign);
+      const res = await axios.put(
+        "/api/teacher/assign-assignments",
+        assignmentToAssign
+      );
       if (res.status === 200) {
         alert("Assignment assigned successfully!");
       } else {
@@ -76,44 +81,48 @@ const ViewAssignments = () => {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-      {assignments?.map((assignment) => (
-        <div key={assignment.id} className="bg-white p-4 rounded-md shadow-md">
-          <h2 className="text-lg font-semibold">{assignment.title}</h2>
-          <form>
-            <div className="mb-4">
-              <label className="block text-gray-700">Select Class:</label>
-              <select
-                value={selectedClass}
-                onChange={(e) => setSelectedClass(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      {assignments &&
+        assignments?.map((assignment) => (
+          <div
+            key={assignment._id}
+            className="bg-white p-4 rounded-md shadow-md"
+          >
+            <h2 className="text-lg font-semibold">{assignment.title}</h2>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700">Select Class:</label>
+                <select
+                  value={selectedClass}
+                  onChange={(e) => setSelectedClass(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="">Select a class</option>
+                  {classes.map((cls) => (
+                    <option key={cls._id} value={cls._id}>
+                      {cls.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Select Due Date:</label>
+                <input
+                  type="date"
+                  value={selectedDueDate}
+                  onChange={(e) => setSelectedDueDate(e.target.value)}
+                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                />
+              </div>
+              <button
+                type="button"
+                onClick={() => handleAssign(assignment._id)}
+                className="bg-green-500 text-white px-4 py-2 rounded"
               >
-                <option value="">Select a class</option>
-                {classes.map((cls) => (
-                  <option key={cls.id} value={cls.id}>
-                    {cls.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Select Due Date:</label>
-              <input
-                type="date"
-                value={selectedDueDate}
-                onChange={(e) => setSelectedDueDate(e.target.value)}
-                className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              />
-            </div>
-            <button
-              type="button"
-              onClick={() => handleAssign(assignment.id)}
-              className="bg-green-500 text-white px-4 py-2 rounded"
-            >
-              Assign to Class
-            </button>
-          </form>
-        </div>
-      ))}
+                Assign to Class
+              </button>
+            </form>
+          </div>
+        ))}
     </div>
   );
 };

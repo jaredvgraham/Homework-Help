@@ -43,6 +43,10 @@ export async function PUT(req: NextRequest) {
     }
     assignment.class = classes;
     await assignment.save();
+    return NextResponse.json(
+      { message: "Assignment assigned successfully" },
+      { status: 200 }
+    );
   } catch (error: any) {
     console.error(error);
     return NextResponse.json(
