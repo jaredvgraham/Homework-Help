@@ -1,6 +1,8 @@
 "use client";
+import { SignOut } from "@/components/Logout";
 import { Class } from "@/types";
 import axios from "axios";
+import { signOut } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -29,6 +31,9 @@ const ClassDetails = () => {
           <p>Teacher: {classData.teacher}</p>
         </div>
       )}
+      <button className="text-black bg-black p-44" onClick={() => signOut()}>
+        Logout
+      </button>
     </div>
   );
 };
