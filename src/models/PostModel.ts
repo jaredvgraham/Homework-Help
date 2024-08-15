@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IPost extends Document {
-  message: string;
+  message?: string;
   assignment?: mongoose.Types.ObjectId[];
   postType: "assignment" | "announcement";
   class: mongoose.Types.ObjectId[];
@@ -11,7 +11,7 @@ export interface IPost extends Document {
 }
 
 const PostSchema: Schema = new Schema({
-  message: { type: String, required: true },
+  message: { type: String, required: false },
   assignment: [
     { type: Schema.Types.ObjectId, ref: "Assignment", required: false },
   ],

@@ -2,8 +2,12 @@ import { auth } from "@/auth";
 import connectToDatabase from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/UserModel";
-import Question, { IQuestion } from "@/models/QuestionModel";
 import Assignment from "@/models/AssignmentModel";
+
+type options = {
+  id: string;
+  text: string;
+};
 
 interface CreateAssignmentRequest {
   details: {
@@ -15,7 +19,7 @@ interface CreateAssignmentRequest {
   youtubeLinks: string[];
   questions: Array<{
     questionText: string;
-    choices: string[];
+    options: options[];
     correctChoice: string;
   }>;
 }
@@ -50,8 +54,6 @@ export async function POST(req: NextRequest) {
       youtubeLinks,
     } = body;
 
-    console.log("bod is thisssss:", body);
-
     const studentIds = await User.find({
       classes: classId,
       role: "student",
@@ -60,21 +62,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "No students found" }, { status: 404 });
     }
 
-    const questionIds = await Promise.all(
-      questions.map(async (q) => {
-        const question = new Question({
-          questionText: q.questionText,
-          choices: q.choices,
-          correctChoice: q.correctChoice,
-        });
-        await question.save();
-        return question._id;
-      })
-    );
+    console.log("questions:", questions);
 
-    console.log("creating assignment with");
+    const embeddedQuestions = questions.map((q) => ({
+      question: q.questionText,
+      options: q.options,
+      answer: q.correctChoice,
+    }));
 
-    // Creat assignment with question IDs
     const assignment = new Assignment({
       title,
       description,
@@ -83,9 +78,8 @@ export async function POST(req: NextRequest) {
       students: studentIds,
       youtubeLinks,
       dueDate,
-      questions: questionIds,
+      questions: embeddedQuestions, // Embed questions directly
     });
-    console.log("creating assignment with", assignment);
 
     await assignment.save();
 

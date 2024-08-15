@@ -44,7 +44,7 @@ const ViewAssignments = () => {
     };
     const fetchAssignments = async () => {
       try {
-        const res = await axios.get("/api/teacher/get-assignments");
+        const res = await axios.get("/api/teacher/assignments/get-assignments");
 
         setAssignments(res.data.assignments);
         console.log("assignments are:", res.data.assignments);
@@ -66,7 +66,7 @@ const ViewAssignments = () => {
 
     try {
       const res = await axios.put(
-        "/api/teacher/assign-assignments",
+        "/api/teacher/assignments/assign-assignments",
         assignmentToAssign
       );
       if (res.status === 200) {

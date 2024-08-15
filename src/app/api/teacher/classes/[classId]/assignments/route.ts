@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import connectToDatabase from "@/lib/mongodb";
 import Assignment from "@/models/AssignmentModel";
+import Class from "@/models/ClassModel";
 
 export async function GET(
   req: NextRequest,
@@ -20,7 +21,12 @@ export async function GET(
   try {
     await connectToDatabase();
     const { classId } = params;
-    const assignments = await Assignment.find({ classId });
+    const classIs = await Class.findById(classId);
+    if (!classIs) {
+      return NextResponse.json({ error: "Class not found" }, { status: 404 });
+    }
+    const assignmentIds = classIs.assignments;
+    const assignments = await Assignment.find({ _id: { $in: assignmentIds } });
     console.log("assignments are:", assignments);
 
     return NextResponse.json(assignments);

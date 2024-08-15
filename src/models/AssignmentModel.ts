@@ -6,6 +6,17 @@ const ClassDueDateSchema = new Schema({
   dueDate: Date,
 });
 
+const Options = new Schema({
+  id: { type: String, required: true },
+  text: { type: String, required: true },
+});
+
+const QuestionSchema = new Schema({
+  question: { type: String, required: true },
+  options: { type: [Options], required: true },
+  answer: { type: String, required: true },
+});
+
 export interface IAssignment extends Document {
   title: string;
   description: string;
@@ -14,8 +25,8 @@ export interface IAssignment extends Document {
   students: mongoose.Types.ObjectId[];
   youtubeLinks?: string[];
   submissions: mongoose.Types.ObjectId[];
-  // dueDate: Date;
-  questions: mongoose.Types.ObjectId[]; // Add this line to connect questions
+
+  questions: (typeof QuestionSchema)[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -30,7 +41,7 @@ const AssignmentSchema: Schema = new Schema(
     youtubeLinks: [{ type: String }],
     submissions: [{ type: Schema.Types.ObjectId, ref: "Submission" }],
     // dueDate: { type: Date, required: true },
-    questions: [{ type: Schema.Types.ObjectId, ref: "Question" }], // Referencing questions
+    questions: { type: [QuestionSchema], required: true },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
   },
