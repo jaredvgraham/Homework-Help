@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import connectToDatabase from "@/lib/mongodb";
+import Assignment from "@/models/AssignmentModel";
 import Post from "@/models/PostModel";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,9 +22,16 @@ export async function GET(
     const { classId } = params;
     console.log("classId is:", classId);
     const posts = await Post.find({ class: classId });
+
     if (!posts) {
       return NextResponse.json({ error: "No posts found" }, { status: 404 });
     }
+
+    const assignmentIds = posts.map((post) => post.assignment);
+
+    const assignments = await Assignment.find({ _id: { $in: assignmentIds } });
+    console.log("assignments are:", assignments);
+
     return NextResponse.json(posts, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(

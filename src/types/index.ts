@@ -34,3 +34,13 @@ export interface Assignment {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface Post {
+  message?: string | null;
+  assignment?: string[];
+  postType: "assignment" | "announcement";
+  class: string[];
+  dueDate?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}

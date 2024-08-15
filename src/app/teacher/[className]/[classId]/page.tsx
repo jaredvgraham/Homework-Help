@@ -95,7 +95,7 @@ const Page = () => {
                       )
                     }
                     key={assignment._id}
-                    className="bg-gray-100 p-3 rounded-lg shadow-sm hover:bg-gray-200 transition"
+                    className="bg-gray-100 p-3 rounded-lg shadow-sm hover:bg-gray-200 hover:cursor-pointer transition"
                   >
                     {assignment.title}
                   </li>
