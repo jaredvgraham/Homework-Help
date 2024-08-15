@@ -91,7 +91,7 @@ const TeacherSidebar = () => {
         <ul>
           <li className="mb-4">
             <Link
-              href={"/student"}
+              href={"/teacher"}
               className={`flex items-center p-3 rounded-lg text-lg hover:bg-blue-100 transition-all duration-200 ${
                 pathname === "/student"
                   ? "bg-blue-100 text-blue-600 font-semibold"
@@ -106,12 +106,12 @@ const TeacherSidebar = () => {
             classes.map((studentClass) => (
               <li key={studentClass._id} className="mb-4 group">
                 <Link
-                  href={`/student/${studentClass.name.toLowerCase()}/${
+                  href={`/teacher/${studentClass.name.toLowerCase()}/${
                     studentClass._id
                   }`}
                   className={`flex items-center p-3 rounded-lg text-lg transition-all duration-200 group-hover:bg-gray-100 ${
                     pathname ===
-                    `/student/${studentClass.name.toLowerCase()}/${
+                    `/teacher/${studentClass.name.toLowerCase()}/${
                       studentClass._id
                     }`
                       ? "bg-blue-100 text-blue-600 font-semibold"
