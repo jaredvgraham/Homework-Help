@@ -24,7 +24,7 @@ const Sidebar = ({
   ];
 
   return (
-    <ul className="space-y-2">
+    <ul className="space-y-2 ">
       {sections.map((section) => (
         <li
           key={section.value}

@@ -16,10 +16,10 @@ import {
 
 const StudentSidebar = () => {
   const icons = {
-    Math: <FaCalculator style={{ color: "white", marginRight: "10px" }} />,
-    Science: <FaFlask style={{ color: "white", marginRight: "10px" }} />,
-    Art: <FaPaintBrush style={{ color: "white", marginRight: "10px" }} />,
-    History: <FaBookOpen style={{ color: "white", marginRight: "10px" }} />,
+    Math: <FaCalculator className="mr-3 text-indigo-500" />,
+    Science: <FaFlask className="mr-3 text-green-500" />,
+    Art: <FaPaintBrush className="mr-3 text-orange-500" />,
+    History: <FaBookOpen className="mr-3 text-blue-500" />,
   };
 
   const [classes, setClasses] = useState<Class[]>([]);
@@ -41,9 +41,8 @@ const StudentSidebar = () => {
           };
         });
         setClasses(fixedClasses);
-        console.log(fixedClasses);
       } catch (error) {
-        console.log(error);
+        console.error("Failed to fetch classes:", error);
       }
     };
     fetchClasses();
@@ -73,57 +72,56 @@ const StudentSidebar = () => {
     <div className="relative">
       {/* Toggle button for small screens */}
       <button
-        className="md:hidden p-2 bg-gray-800 text-white"
+        className="md:hidden p-3 rounded-full bg-blue-600 text-white shadow-lg fixed top-4 left-4 z-30 transform transition-transform duration-300 hover:scale-105"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? "Close Menu" : "Open Menu"}
+        {isOpen ? "✖" : "☰"}
       </button>
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`w-64 h-screen bg-white text-white shadow-2xl p-4 overflow-y-auto transform font-light ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:relative z-20`}
+        className={`fixed md:relative top-0 left-0 w-64 h-screen bg-white text-gray-900 shadow-2xl border-r border-gray-200 p-6 transform transition-transform duration-300 ease-in-out z-20 ${
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
       >
-        <h2 className="text-2xl font-semibold mb-4 text-blue-500 text-center p-4">
+        <h2 className="text-3xl font-extrabold mb-8 text-center text-blue-600">
           Classes
         </h2>
         <ul>
-          <li className="mb-2">
+          <li className="mb-6">
             <Link
               href={"/student"}
-              className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
-                pathname === "/student" ? "bg-blue-500" : "bg-black"
+              className={`flex items-center p-4 rounded-lg text-lg font-medium hover:bg-blue-100 transition-all duration-200 ${
+                pathname === "/student"
+                  ? "bg-blue-100 text-blue-600"
+                  : "text-gray-700"
               }`}
             >
-              <FaHome style={{ color: "white", marginRight: "10px" }} />
+              <FaHome className="mr-3" />
               Dashboard
             </Link>
           </li>
           {classes &&
             classes.map((studentClass) => (
-              <div key={studentClass._id} className="">
-                <li key={studentClass._id} className="mb-2 ">
-                  <Link
-                    href={`/student/${studentClass.name.toLocaleLowerCase()}/${
+              <li key={studentClass._id} className="mb-6">
+                <Link
+                  href={`/student/${studentClass.name.toLowerCase()}/${
+                    studentClass._id
+                  }`}
+                  className={`flex items-center p-4 rounded-lg text-lg font-medium hover:bg-blue-100 transition-all duration-200 ${
+                    pathname ===
+                    `/student/${studentClass.name.toLowerCase()}/${
                       studentClass._id
-                    }`}
-                    className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
-                      pathname ===
-                      `/student/${studentClass.name.toLocaleLowerCase()}/${
-                        studentClass._id
-                      }`
-                        ? "bg-blue-500"
-                        : "bg-black"
-                    }`}
-                  >
-                    {icons[studentClass.name as keyof typeof icons]}
-
-                    {studentClass.name}
-                  </Link>
-                </li>
-              </div>
+                    }`
+                      ? "bg-blue-100 text-blue-600"
+                      : "text-gray-700"
+                  }`}
+                >
+                  {icons[studentClass.name as keyof typeof icons]}
+                  {studentClass.name}
+                </Link>
+              </li>
             ))}
         </ul>
       </div>

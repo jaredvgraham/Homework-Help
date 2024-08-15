@@ -1,13 +1,6 @@
 "use client";
 import { useState } from "react";
-import {
-  Box,
-  Drawer,
-  AppBar,
-  Toolbar,
-  Typography,
-  Button,
-} from "@mui/material";
+
 import Sidebar from "@/components/assignment-workspace/Sidebar";
 import AssignmentDetails from "@/components/assignment-workspace/AssignmentDetails";
 import Questions from "@/components/assignment-workspace/Questions";
@@ -81,7 +74,7 @@ const CreateAssignment = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex ">
       <header className="fixed w-full bg-blue-600 z-10">
         <div className="flex items-center p-4">
           <Link href="/teacher">
@@ -97,7 +90,7 @@ const CreateAssignment = () => {
         className="fixed h-full bg-gray-100"
         style={{ width: `${drawerWidth}px` }}
       >
-        <div className="mt-16">
+        <div className="mt-16 ">
           <Sidebar
             selectedSection={selectedSection}
             setSelectedSection={setSelectedSection}

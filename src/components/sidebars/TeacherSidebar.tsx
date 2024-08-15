@@ -16,10 +16,10 @@ import {
 
 const TeacherSidebar = () => {
   const icons = {
-    Math: <FaCalculator style={{ color: "white", marginRight: "10px" }} />,
-    Science: <FaFlask style={{ color: "white", marginRight: "10px" }} />,
-    Art: <FaPaintBrush style={{ color: "white", marginRight: "10px" }} />,
-    History: <FaBookOpen style={{ color: "white", marginRight: "10px" }} />,
+    Math: <FaCalculator className="mr-3 text-blue-500" />,
+    Science: <FaFlask className="mr-3 text-green-500" />,
+    Art: <FaPaintBrush className="mr-3 text-yellow-500" />,
+    History: <FaBookOpen className="mr-3 text-purple-500" />,
   };
 
   const [classes, setClasses] = useState<Class[]>([]);
@@ -29,14 +29,13 @@ const TeacherSidebar = () => {
   const pathname = usePathname();
 
   const isTeacherPage = pathname.startsWith("/teacher");
-
   const isWorkspace = pathname.includes("/teacher/create-assignment");
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const res = await axios.get("/api/teacher/classes"); // Adjust the endpoint as needed
-        setClasses(res.data); // Assuming the backend returns an array of classes
+        const res = await axios.get("/api/teacher/classes");
+        setClasses(res.data);
       } catch (error) {
         console.error("Failed to fetch classes:", error);
       }
@@ -59,6 +58,7 @@ const TeacherSidebar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [sidebarRef]);
+
   if (!isTeacherPage || isWorkspace) {
     return null;
   }
@@ -67,59 +67,71 @@ const TeacherSidebar = () => {
     <div className="relative">
       {/* Toggle button for small screens */}
       <button
-        className="md:hidden p-2 bg-gray-800 text-white"
+        className="md:hidden p-3 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white fixed top-4 left-4 z-30 shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-110"
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? "Close Menu" : "Open Menu"}
+        {isOpen ? "✖" : "☰"}
       </button>
 
       {/* Sidebar */}
       <div
         ref={sidebarRef}
-        className={`w-64 h-screen bg-white text-white shadow-2xl p-4 overflow-y-auto transform font-light ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:relative z-20`}
+        className={`fixed md:relative top-0 left-0 w-72 h-screen bg-white shadow-2xl border-r border-gray-200 p-6 rounded-br-3xl transform transition-transform duration-300 ease-in-out z-20 ${
+          isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
+        }`}
       >
-        <h2 className="text-2xl font-semibold mb-4 text-blue-500 text-center p-4">
-          Classes
-        </h2>
+        <div className="flex items-center justify-center mb-8">
+          <img
+            src="/logo.png" // Replace with your logo path
+            alt="App Logo"
+            className="h-10 w-10 mr-2"
+          />
+          <h2 className="text-2xl font-bold text-gray-700">Your Classes</h2>
+        </div>
         <ul>
-          <li className="mb-2">
+          <li className="mb-4">
             <Link
               href={"/student"}
-              className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
-                pathname === "/student" ? "bg-blue-500" : "bg-black"
+              className={`flex items-center p-3 rounded-lg text-lg hover:bg-blue-100 transition-all duration-200 ${
+                pathname === "/student"
+                  ? "bg-blue-100 text-blue-600 font-semibold"
+                  : "text-gray-700"
               }`}
             >
-              <FaHome style={{ color: "white", marginRight: "10px" }} />
+              <FaHome className="mr-3 text-blue-600" />
               Dashboard
             </Link>
           </li>
           {classes &&
             classes.map((studentClass) => (
-              <div key={studentClass._id} className="">
-                <li key={studentClass._id} className="mb-2 ">
-                  <Link
-                    href={`/student/${studentClass.name.toLocaleLowerCase()}/${
+              <li key={studentClass._id} className="mb-4 group">
+                <Link
+                  href={`/student/${studentClass.name.toLowerCase()}/${
+                    studentClass._id
+                  }`}
+                  className={`flex items-center p-3 rounded-lg text-lg transition-all duration-200 group-hover:bg-gray-100 ${
+                    pathname ===
+                    `/student/${studentClass.name.toLowerCase()}/${
                       studentClass._id
-                    }`}
-                    className={`text-lg flex items-center  p-2 text-white rounded-md hover:bg-blue-500 hover:cursor-pointer ${
-                      pathname ===
-                      `/student/${studentClass.name.toLocaleLowerCase()}/${
-                        studentClass._id
-                      }`
-                        ? "bg-blue-500"
-                        : "bg-black"
-                    }`}
-                  >
-                    {icons[studentClass.name as keyof typeof icons]}
-
-                    {studentClass.name}
-                  </Link>
-                </li>
-              </div>
+                    }`
+                      ? "bg-blue-100 text-blue-600 font-semibold"
+                      : "text-gray-700"
+                  }`}
+                >
+                  {icons[studentClass.subject as keyof typeof icons]}
+                  <span className="flex-grow">{studentClass.name}</span>
+                </Link>
+              </li>
             ))}
         </ul>
+        <div className="absolute bottom-8 left-6 right-6 text-center">
+          <Link
+            href="/settings"
+            className="inline-flex items-center justify-center w-full p-3 bg-gradient-to-r from-slate-200 to-blue-500  rounded-full shadow-lg hover:shadow-xl transition-shadow duration-300 text-black"
+          >
+            Settings
+          </Link>
+        </div>
       </div>
     </div>
   );
