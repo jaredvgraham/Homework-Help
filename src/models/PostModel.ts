@@ -22,6 +22,7 @@ const PostSchema: Schema = new Schema({
     default: "announcement",
   },
   class: [{ type: Schema.Types.ObjectId, ref: "Class", required: false }],
+  description: { type: String, required: false },
   dueDate: { type: Date, required: false },
 });
 

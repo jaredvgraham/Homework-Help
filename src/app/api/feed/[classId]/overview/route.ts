@@ -38,6 +38,8 @@ export async function GET(
     const assignments = await Assignment.find({ _id: { $in: assignmentIds } });
     console.log("assignments are:", assignments);
 
+    console.log("posts are:", posts);
+
     return NextResponse.json(posts, { status: 200 });
   } catch (error: any) {
     return NextResponse.json(
