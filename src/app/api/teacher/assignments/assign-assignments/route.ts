@@ -12,6 +12,7 @@ interface AssignAssignment {
 
 interface AssignAssignmentRequest {
   message: string;
+  description: string;
   assignmentId: string;
   classes: AssignAssignment[];
 }
@@ -34,7 +35,7 @@ export async function PUT(req: NextRequest) {
   try {
     await connectToDatabase();
     const body: AssignAssignmentRequest = await req.json();
-    const { message, assignmentId, classes } = body;
+    const { message, assignmentId, description, classes } = body;
     console.log("body is thisssss:", body);
 
     const assignment = await Assignment.findById(assignmentId);
@@ -48,11 +49,11 @@ export async function PUT(req: NextRequest) {
     await assignment.save();
 
     const post = new Post({
-      message: message,
+      message: assignment.title || message,
       postType: "assignment",
       assignment: assignment._id,
       class: classes.map((c) => c.classId),
-      description: assignment.description,
+      description: assignment.description || description,
       dueDate: assignment.class[0].dueDate,
     });
 
