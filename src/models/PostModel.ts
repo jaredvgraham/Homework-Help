@@ -5,6 +5,7 @@ export interface IPost extends Document {
   assignment?: mongoose.Types.ObjectId[];
   postType: "assignment" | "announcement";
   class: mongoose.Types.ObjectId[];
+  description?: string;
   dueDate?: Date;
   createdAt: Date;
   updatedAt: Date;

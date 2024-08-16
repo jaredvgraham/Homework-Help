@@ -4,6 +4,12 @@ import Assignment from "@/models/AssignmentModel";
 import Post from "@/models/PostModel";
 import { NextRequest, NextResponse } from "next/server";
 
+interface PostResponse {
+  title: string;
+  dueDate: Date;
+  description: string;
+}
+
 export async function GET(
   req: NextRequest,
   { params }: { params: { classId: string } }

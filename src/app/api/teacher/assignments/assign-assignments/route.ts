@@ -52,6 +52,7 @@ export async function PUT(req: NextRequest) {
       postType: "assignment",
       assignment: assignment._id,
       class: classes.map((c) => c.classId),
+      description: assignment.description,
       dueDate: assignment.class[0].dueDate,
     });
 
