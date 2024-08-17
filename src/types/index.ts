@@ -37,6 +37,7 @@ export interface Assignment {
 
 export interface Post {
   message?: string | null;
+  description?: string | null;
   assignment?: string[];
   postType: "assignment" | "announcement";
   class: string[];

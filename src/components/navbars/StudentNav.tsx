@@ -2,10 +2,21 @@
 import React from "react";
 import { FaHome, FaBell, FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 const StudentNav = () => {
   const pathname = usePathname();
+
+  const Router = useRouter();
 
   const isStudentPage = pathname.includes("/student");
 
@@ -28,6 +39,11 @@ const StudentNav = () => {
   ];
 
   const linksToRender = isClassPage ? classLinks : defaultLinks;
+
+  const handleLogout = async () => {
+    await signOut();
+    Router.push("/login");
+  };
 
   return (
     <nav className="bg-white shadow-md border-b border-gray-200 w-full">
@@ -54,15 +70,24 @@ const StudentNav = () => {
             <FaBell className="h-6 w-6" aria-hidden="true" />
           </button>
           <div className="relative">
-            <button
-              type="button"
-              className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <FaUserCircle
-                className="h-8 w-8 text-gray-600"
-                aria-hidden="true"
-              />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <FaUserCircle
+                  className="h-8 w-8 text-gray-600"
+                  aria-hidden="true"
+                />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>Profile</DropdownMenuLabel>
+                <DropdownMenuItem>
+                  <Link href="/student/profile">Edit Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </div>
