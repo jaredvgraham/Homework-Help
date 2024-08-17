@@ -23,24 +23,17 @@ export default function RootLayout({
 }>) {
   return (
     <SessionWrapper>
-      <AuthProvider>
-        <html lang="en">
-          <body className={inter.className}>
-            <LandingNav />
+      {/* <AuthProvider> */}
+      <html lang="en">
+        <body className={inter.className}>
+          <LandingNav />
 
-            <div className="flex">
-              <StudentSidebar />
-              <TeacherSidebar />
-              <div className="flex-col w-full">
-                <StudentNav />
-                <TeacherNavBar />
-
-                {children}
-              </div>
-            </div>
-          </body>
-        </html>
-      </AuthProvider>
+          <div className="flex">
+            <div className="flex-col w-full">{children}</div>
+          </div>
+        </body>
+      </html>
+      {/* </AuthProvider> */}
     </SessionWrapper>
   );
 }

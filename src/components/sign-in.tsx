@@ -1,7 +1,17 @@
 import { signIn } from "@/auth";
 import { SignOut } from "./Logout";
+import { getRole } from "@/actions/auth";
+import { redirect } from "next/navigation";
 
-export default function SignIn() {
+export default async function SignIn() {
+  const role = await getRole();
+  if (role) {
+    if (role === "student") {
+      redirect("/student");
+    } else if (role === "teacher") {
+      redirect("/teacher");
+    }
+  }
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-indigo-600">
       <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-8 md:p-12 lg:p-16">

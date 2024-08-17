@@ -1,8 +1,8 @@
 import RegisterSchoolForm from "@/components/register/RegisterSchoolForm";
 import React from "react";
 
-const page = () => {
+const AdminDash = () => {
   return <RegisterSchoolForm />;
 };
 
-export default page;
+export default AdminDash;
